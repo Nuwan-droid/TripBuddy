@@ -7,6 +7,7 @@ function AdminDestination() {
     const [newDestination, setNewDestination] = useState({
         name: '',
         description: '',
+        location: '',
         image_url: '',
     });
 
@@ -29,7 +30,7 @@ function AdminDestination() {
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/destinations/', newDestination);
             setDestinations([...destinations, response.data]);
-            setNewDestination({ name: '', description: '', image_url: '' });
+            setNewDestination({ name: '', location: '', description: '', image_url: '' });
         } catch (error) {
             console.error('Error adding destination:', error);
         }
@@ -38,8 +39,10 @@ function AdminDestination() {
     // Delete a destination
     const deleteDestination = async (id) => {
         try {
+            console.log(`Attempting to delete destination with id: ${id}`);
             await axios.delete(`http://127.0.0.1:8000/api/destinations/${id}/`);
             setDestinations(destinations.filter(destination => destination.id !== id));
+            console.log(`Successfully deleted destination with id: ${id}`);
         } catch (error) {
             console.error('Error deleting destination:', error);
         }
@@ -61,6 +64,12 @@ function AdminDestination() {
                     value={newDestination.description}
                     onChange={(e) => setNewDestination({ ...newDestination, description: e.target.value })}
                 ></textarea>
+                <input
+                    type="text"
+                    placeholder="Location"
+                    value={newDestination.location}
+                    onChange={(e) => setNewDestination({ ...newDestination, location: e.target.value })}
+                />
                 <input
                     type="text"
                     placeholder="Image URL"
