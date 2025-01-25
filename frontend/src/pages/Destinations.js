@@ -22,7 +22,7 @@ function Destinations() {
             <div className="cards-container">
                 {destinations.map(destination => (
                     <div key={destination.id} className="destination-card">
-                        <img src={destination.image_url} alt={destination.name} className="destination-image"/>
+                        {/* <img src={destination.image} alt={destination.name} /> */}
                         <h2>{destination.name}</h2>
                         <p>{destination.description}</p>
                     </div>
