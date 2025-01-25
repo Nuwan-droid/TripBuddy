@@ -49,9 +49,7 @@ function AdminDestination() {
     };
 
     return (
-
         <div className="admin-container">
-            <LoginRegister/>
             <h1>Admin Dashboard</h1>
             <div className="add-destination-form">
                 <h2>Add New Destination</h2>

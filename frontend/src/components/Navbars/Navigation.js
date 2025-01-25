@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../images/tripbuddy-logo.svg';
+import Logo from '../../images/tripbuddy-logo.svg';
 
 function Navigation() {
     return (
@@ -9,6 +9,8 @@ function Navigation() {
             <div style={styles.links}>
                 <Link to="/" style={styles.link}>Home</Link>
                 <Link to="/destinations" style={styles.link}>Destinations</Link>
+                <Link to="/admin" style={styles.link}>Admin</Link>
+                <Link to="/managedestinations" style={styles.link}>Manage Destinations</Link>
             </div>
         </nav>
     );
