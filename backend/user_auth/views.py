@@ -1,44 +1,39 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.views import View
-import json
-from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 # User model and serializer for registration
+User = get_user_model()
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
     password_confirmation = serializers.CharField(write_only=True, required=True)
 
     class Meta:
-        model = get_user_model()  # Assuming you are using a custom user model
-        fields = ['username', 'email', 'password', 'password_confirmation', 'role']
+        model = User
+        fields = ['username', 'email', 'password', 'password_confirmation']
 
     def validate(self, data):
-        # Ensure passwords match
         if data['password'] != data['password_confirmation']:
             raise serializers.ValidationError("Passwords do not match")
         return data
 
     def create(self, validated_data):
-        # Remove password_confirmation field before creating the user
         validated_data.pop('password_confirmation')
-        user = get_user_model().objects.create_user(**validated_data)
-        return user
+        return User.objects.create_user(**validated_data)
 
 
 class RegisterUserView(APIView):
-    permission_classes = [AllowAny]  # Allow access without authentication
+    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
-        
         if serializer.is_valid():
             user = serializer.save()
             return Response({
@@ -46,92 +41,64 @@ class RegisterUserView(APIView):
                 'user': {
                     'username': user.username,
                     'email': user.email,
-                    'role': user.role,
                 }
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class LoginView(View):
-    """
-    Handles user login.
-    """
+class LoginView(APIView):
+    permission_classes = [AllowAny]
 
     def post(self, request):
-        try:
-            data = json.loads(request.body)
-            username = data.get('username')
-            password = data.get('password')
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-            if not username or not password:
-                return JsonResponse({"error": "Username and password are required."}, status=400)
+        if not username or not password:
+            return Response({"error": "Username and password are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-            user = authenticate(username=username, password=password)
-
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return JsonResponse({
-                        "message": "Login successful.",
-                        "user": {
-                            "id": user.id,
-                            "username": user.username,
-                            "email": user.email,
-                            "role": user.role,
-                        }
-                    }, status=200)
-                else:
-                    return JsonResponse({"error": "User account is inactive."}, status=403)
-            else:
-                return JsonResponse({"error": "Invalid username or password."}, status=401)
-
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON."}, status=400)
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return Response({
+                    "message": "Login successful.",
+                    "user": {
+                        "id": user.id,
+                        "username": user.username,
+                        "email": user.email,
+                    }
+                }, status=status.HTTP_200_OK)
+            return Response({"error": "User account is inactive."}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"error": "Invalid username or password."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class LogoutView(View):
-    """
-    Handles user logout.
-    """
-
+class LogoutView(APIView):
     def post(self, request):
         if request.user.is_authenticated:
             logout(request)
-            return JsonResponse({"message": "Logout successful."}, status=200)
-        return JsonResponse({"error": "User is not logged in."}, status=400)
+            return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
+        return Response({"error": "User is not logged in."}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class UserDetailView(View):
-    """
-    Retrieves user details.
-    """
-
+class UserDetailView(APIView):
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
-        return JsonResponse({
+        return Response({
             "id": user.id,
             "username": user.username,
             "email": user.email,
-            "role": user.role,
             "date_joined": user.date_joined,
         })
 
 
-class CurrentUserView(View):
-    """
-    Retrieves details of the currently authenticated user.
-    """
-
+class CurrentUserView(APIView):
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
-            return JsonResponse({
+            return Response({
                 "id": user.id,
                 "username": user.username,
                 "email": user.email,
-                "role": user.role,
                 "date_joined": user.date_joined,
-            }, status=200)
-        return JsonResponse({"error": "User is not authenticated."}, status=401)
+            }, status=status.HTTP_200_OK)
+        return Response({"error": "User is not authenticated."}, status=status.HTTP_401_UNAUTHORIZED)

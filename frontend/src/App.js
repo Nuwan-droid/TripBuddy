@@ -16,7 +16,6 @@ function App() {
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/managedestinations" element={<ManageDestinations />} />
                 </Routes>
-                <LoginRegister/>
             </div>
         </Router>
     );
