@@ -11,6 +11,7 @@ function Navigation() {
                 <Link to="/destinations" style={styles.link}>Destinations</Link>
                 <Link to="/admin" style={styles.link}>Admin</Link>
                 <Link to="/managedestinations" style={styles.link}>Manage Destinations</Link>
+                <Link to="/login" style={styles.link}>Login</Link>
             </div>
         </nav>
     );

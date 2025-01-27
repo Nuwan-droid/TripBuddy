@@ -5,6 +5,7 @@ import Destinations from './pages/Destinations.js';
 import Home from './pages/Home.js';
 import Admin from 'layouts/Admin.js';
 import ManageDestinations from './pages/AdminDestination.js';
+import Login from './components/LoginRegister/LoginRegister.jsx';
 function App() {
     return (
         <Router>
@@ -15,6 +16,7 @@ function App() {
                     <Route path="/destinations" element={<Destinations />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/managedestinations" element={<ManageDestinations />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </div>
         </Router>
