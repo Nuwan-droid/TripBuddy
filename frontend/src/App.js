@@ -9,7 +9,8 @@ import ManageDestinations from './pages/AdminDestination.js';
 import Login from './components/LoginRegister/LoginRegister.jsx';
 
 import Dashboard from 'views/Dashboard.js';
-import Plans from '../src/pages/plans.js';  
+import Plans from '../src/pages/plans.js';
+import MyTrips from 'views/Mytrips.js';  
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plans" element={<Plans />} />
+                    <Route path="/mytrips" element={<MyTrips />} />
                 </Routes>
             </div>
         </Router>

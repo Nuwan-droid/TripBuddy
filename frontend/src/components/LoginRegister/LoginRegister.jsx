@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios
 import "./LoginRegister.css";
 
 function LoginRegister() {
@@ -35,29 +36,24 @@ function LoginRegister() {
             : { username, email, password, password_confirmation: passwordConfirmation };
 
         try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
+            const response = await axios.post(url, payload);
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (response.status === 200) {
                 if (isLogin) {
                     setSuccessMessage("Logged in successfully!");
                     setErrorMessage("");
 
-                    // Redirect to a dashboard or homepage after successful login
+                    // Store the token in localStorage
+                    localStorage.setItem("token", response.data.access);
+
+                    // Redirect to the dashboard after successful login
                     navigate("/dashboard"); // Change "/dashboard" to your desired path
                 } else {
                     setSuccessMessage("Registered successfully!");
                     setErrorMessage("");
                 }
             } else {
-                setErrorMessage(data.detail || "Something went wrong. Please try again.");
+                setErrorMessage(response.data.detail || "Something went wrong. Please try again.");
             }
         } catch (error) {
             console.error("Error:", error);

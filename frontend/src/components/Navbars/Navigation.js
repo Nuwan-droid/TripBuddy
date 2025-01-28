@@ -14,7 +14,7 @@ function Navigation() {
                 <Link to="/destinations" style={styles.navLink}>Destinations</Link>
                 <Link to="/plans" style={styles.navLink}>Plans</Link>
                 <Link to="/admin" style={styles.navLink}>Admin</Link>
-                {/* <Link to="/managedestinations" style={styles.navLink}>Manage Destinations</Link> */}
+                <Link to="/managedestinations" style={styles.navLink}>Manage Destinations</Link>
             </div>
         </nav>
     );
