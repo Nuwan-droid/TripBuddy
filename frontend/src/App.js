@@ -6,6 +6,7 @@ import Home from './pages/Home.js';
 import Admin from 'layouts/Admin.js';
 import ManageDestinations from './pages/AdminDestination.js';
 import Login from './components/LoginRegister/LoginRegister.jsx';
+import Dashboard from 'views/Dashboard.js';
 function App() {
     return (
         <Router>
@@ -17,6 +18,7 @@ function App() {
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/managedestinations" element={<ManageDestinations />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                 </Routes>
             </div>
         </Router>

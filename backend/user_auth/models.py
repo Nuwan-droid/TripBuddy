@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
+
 class UserManager(BaseUserManager):
     """
     Custom manager for the User model.
@@ -23,11 +24,15 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.save(using=self._db)
         return user
+    class Meta:
+        db_table = 'users'
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     """
-    Custom user model based on the existing `users` table.
+    Custom user model based on the existing users table.
     """
     ROLE_CHOICES = (
         ('admin', 'Admin'),
@@ -49,9 +54,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
-    def __str__(self):
+    def _str_(self):
         return self.username
     class Meta:
         db_table = 'users'
         verbose_name = 'User'
-        verbose_name_plural = 'Users'
+        verbose_name_plural = 'Users'    

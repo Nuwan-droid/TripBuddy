@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'itinerary',
     'expense',
     'reviews',
+    'trips',
     'corsheaders',
 
 ]
@@ -60,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -141,3 +143,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Use the custom user model
 AUTH_USER_MODEL = 'user_auth.User'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
