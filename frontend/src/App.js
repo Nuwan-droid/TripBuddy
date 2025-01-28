@@ -4,6 +4,7 @@ import Navigation from './components/Navbars/Navigation'; // Adjust path if need
 import Destinations from './pages/Destinations';
 import Home from './pages/Home';
 import Admin from './layouts/Admin';
+import plans from './pages/plans';
 import ManageDestinations from './pages/AdminDestination';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/destinations" element={<Destinations />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/managedestinations" element={<ManageDestinations />} />
+                    <Route path="/plans" element={<plans />} />
                 </Routes>
             </div>
         </Router>

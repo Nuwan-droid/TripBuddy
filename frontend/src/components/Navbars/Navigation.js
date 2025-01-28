@@ -36,7 +36,7 @@ const styles = {
     },
     navLink: {
         textDecoration: 'none',
-        color: 'black', // White text for better contrast on the navbar
+        color: 'black', 
         fontSize: '18px',
         fontWeight: 'bold',
     },
