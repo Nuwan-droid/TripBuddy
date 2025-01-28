@@ -1,58 +1,77 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../assets/css/mytrips.css";
+import { useNavigate } from "react-router-dom";
 
 function MyTrips() {
     const [trips, setTrips] = useState([]);
     const [selectedTrip, setSelectedTrip] = useState(null); // State for selected trip details
-    const [destinationImages, setDestinationImages] = useState({}); // State for storing destination images
+    const [destinationData, setDestinationData] = useState({}); // Object to store destination data (name and image)
+    const [loading, setLoading] = useState(true); // Loading state
     const token = localStorage.getItem("token"); // Get token from local storage
+
+    const navigate = useNavigate(); // Hook for navigation
 
     useEffect(() => {
         fetchTrips();
     }, []);
 
     const fetchTrips = async () => {
+        setLoading(true);
         try {
             const response = await axios.get("http://127.0.0.1:8000/trips/trips/", {
-                headers: { Authorization: `Bearer ${token}` }, // Send token in header
+                headers: { Authorization: `Bearer ${token}` },
             });
             setTrips(response.data);
 
-            // Fetch destination image URLs
-            const destinationData = await fetchDestinationImages(response.data);
-            setDestinationImages(destinationData);
+            // Fetch destination names and image URLs
+            const destinationData = await fetchDestinationData(response.data);
+            setDestinationData(destinationData);
         } catch (error) {
             console.error("Error fetching trips:", error);
+            alert("Failed to fetch trips. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
-    const fetchDestinationImages = async (trips) => {
+    const fetchDestinationData = async (trips) => {
         const destinationIds = [...new Set(trips.map((trip) => trip.destination_id))];
-        const destinationImages = {};
+        const destinationData = {};
 
         try {
-            // Fetch destination data for each unique destination_id
             for (const destinationId of destinationIds) {
                 const response = await axios.get(`http://127.0.0.1:8000/api/destinations/${destinationId}`, {
-                    headers: { Authorization: `Bearer ${token}` }, // Send token in header
+                    headers: { Authorization: `Bearer ${token}` },
                 });
-                destinationImages[destinationId] = response.data.image_url;
+                destinationData[destinationId] = {
+                    name: response.data.name, // Storing destination name
+                    image_url: response.data.image_url, // Storing destination image URL
+                };
             }
         } catch (error) {
-            console.error("Error fetching destination images:", error);
+            console.error("Error fetching destination data:", error);
         }
 
-        return destinationImages;
+        return destinationData;
     };
 
     const handleCardClick = (trip) => {
-        setSelectedTrip(trip); // Set selected trip to show in the modal
+        setSelectedTrip(trip);
     };
 
     const closeModal = () => {
-        setSelectedTrip(null); // Close the modal by setting selectedTrip to null
+        setSelectedTrip(null);
     };
+
+    const handleEditClick = (id) => {
+        // Using navigate() for redirecting to the edit trip page
+        navigate(`/edittrip/${id}`);
+    };
+
+    if (loading) {
+        return <p>Loading your trips...</p>;
+    }
 
     return (
         <div>
@@ -67,12 +86,17 @@ function MyTrips() {
                         <h3>{trip.trip_name}</h3>
                         <p>Start Date: {trip.start_date}</p>
                         <p>End Date: {trip.end_date}</p>
-                        {destinationImages[trip.destination_id] && (
-                            <img
-                                src={destinationImages[trip.destination_id]}
-                                alt="Destination"
-                                className="destination-image"
-                            />
+                        {destinationData[trip.destination_id] ? (
+                            <>
+                                <h4 className="destination-name">{destinationData[trip.destination_id].name}</h4> {/* Display the destination name in blue */}
+                                <img
+                                    src={destinationData[trip.destination_id].image_url}
+                                    alt="Destination"
+                                    className="destination-image"
+                                />
+                            </>
+                        ) : (
+                            <p>No image available</p>
                         )}
                     </div>
                 ))}
@@ -84,19 +108,23 @@ function MyTrips() {
                     <div className="modal-content">
                         <span className="close-btn" onClick={closeModal}>&times;</span>
                         <h2>{selectedTrip.trip_name}</h2>
-                        <p><strong>Destination ID:</strong> {selectedTrip.destination_id}</p>
+                        <p><strong>Destination:</strong> <span className="destination-name">{destinationData[selectedTrip.destination_id]?.name}</span></p> {/* Show destination name in blue */}
                         <p><strong>Start Date:</strong> {selectedTrip.start_date}</p>
                         <p><strong>End Date:</strong> {selectedTrip.end_date}</p>
                         <p><strong>Total Budget:</strong> {selectedTrip.total_budget}</p>
                         <p><strong>Created At:</strong> {selectedTrip.created_at}</p>
                         <p><strong>Updated At:</strong> {selectedTrip.updated_at}</p>
-                        {destinationImages[selectedTrip.destination_id] && (
+                        {destinationData[selectedTrip.destination_id] && (
                             <img
-                                src={destinationImages[selectedTrip.destination_id]}
+                                src={destinationData[selectedTrip.destination_id].image_url}
                                 alt="Destination"
-                                className="destination-image-modal"
+                                className="destination-image-modal" // Apply this class for small image
                             />
                         )}
+                        {/* Edit Button */}
+                        <button className="edit-btn" onClick={() => handleEditClick(selectedTrip.id)}>
+                            Edit Trip Details
+                        </button>
                     </div>
                 </div>
             )}

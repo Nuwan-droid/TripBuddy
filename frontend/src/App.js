@@ -11,7 +11,7 @@ import Login from './components/LoginRegister/LoginRegister.jsx';
 import Dashboard from 'views/Dashboard.js';
 import Plans from '../src/pages/plans.js';
 import MyTrips from 'views/Mytrips.js';  
-
+import EditTrip from 'views/EditTrip.js';
 function App() {
     return (
         <Router>
@@ -26,6 +26,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plans" element={<Plans />} />
                     <Route path="/mytrips" element={<MyTrips />} />
+                    <Route path="/edittrip/:id" element={<EditTrip />} />
                 </Routes>
             </div>
         </Router>

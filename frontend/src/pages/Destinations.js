@@ -33,7 +33,7 @@ function Destinations() {
         }
 
         // If the user is logged in, proceed with adding the destination to their trip
-        axios.post('http://127.0.0.1:8000/trips/add_destination/', { 
+        axios.post('http://127.0.0.1:8000/api/destination/destination/', { 
             destination_id: destinationId 
         }, {
             headers: {
