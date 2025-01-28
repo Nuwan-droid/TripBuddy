@@ -1,20 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; 
-import logo from '..//.//..//assets/img/logo.jpeg';
+import { Link } from 'react-router-dom';
+import Logo from '../../images/tripbuddy-logo.svg';
 
 function Navigation() {
     return (
         <nav style={styles.nav}>
-            
-            <img src= {logo} alt="TripBuddy Logo" style={styles.logo} />
-
-           
-            <div style={styles.navLinksContainer}>
-                <Link to="/" style={styles.navLink}>Home</Link>
-                <Link to="/destinations" style={styles.navLink}>Destinations</Link>
-                <Link to="/plans" style={styles.navLink}>Plans</Link>
-                <Link to="/admin" style={styles.navLink}>Admin</Link>
-                {/* <Link to="/managedestinations" style={styles.navLink}>Manage Destinations</Link> */}
+            <img src={Logo} alt="TripBuddy Logo" style={styles.logo} />
+            <div style={styles.links}>
+                <Link to="/" style={styles.link}>Home</Link>
+                <Link to="/destinations" style={styles.link}>Destinations</Link>
+                <Link to="/admin" style={styles.link}>Admin</Link>
+                <Link to="/managedestinations" style={styles.link}>Manage Destinations</Link>
+                <Link to="/login" style={styles.link}>Login</Link>
             </div>
         </nav>
     );
@@ -24,19 +21,20 @@ const styles = {
     nav: {
         display: 'flex',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'red', // Navy Blue
         padding: '10px 20px',
-        backgroundColor: 'rgba(6, 120, 105, 0.4)', 
     },
     logo: {
-        height: '50px',
+        height: '40px',
     },
-    navLinksContainer: {
+    links: {
         display: 'flex',
-        gap: '40px',
+        gap: '20px',
     },
-    navLink: {
+    link: {
         textDecoration: 'none',
-        color: 'black', 
+        color: 'white',
         fontSize: '18px',
         fontWeight: 'bold',
     },
