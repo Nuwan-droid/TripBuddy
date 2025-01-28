@@ -19,9 +19,12 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 
+from destination.api import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('destination.api.urls')),
+    path('api/destinations/<int:destination_id>/', views.DestinationDetailView.as_view(), name='destination-detail'),
     path('trips/', include('trips.api.urls')),
     path('auth/', include('user_auth.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
