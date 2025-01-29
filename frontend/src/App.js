@@ -7,8 +7,11 @@ import Home from './pages/Home.js';
 import Admin from 'layouts/Admin.js';
 import ManageDestinations from './pages/AdminDestination.js';
 import Login from './components/LoginRegister/LoginRegister.jsx';
-import Plans from '../src/pages/plans.js';  
 
+import Dashboard from 'views/Dashboard.js';
+import Plans from '../src/pages/plans.js';
+import MyTrips from 'views/Mytrips.js';  
+import EditTrip from 'views/EditTrip.js';
 function App() {
     return (
         <Router>
@@ -20,7 +23,10 @@ function App() {
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/managedestinations" element={<ManageDestinations />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plans" element={<Plans />} />
+                    <Route path="/mytrips" element={<MyTrips />} />
+                    <Route path="/edittrip/:id" element={<EditTrip />} />
                 </Routes>
             </div>
         </Router>

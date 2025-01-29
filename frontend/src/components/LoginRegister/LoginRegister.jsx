@@ -1,86 +1,137 @@
-import React, { useState } from 'react';
-import './LoginRegister.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import axios
+import "./LoginRegister.css";
 
-const LoginRegister = () => {
-  const [isRegister, setIsRegister] = useState(false);
+function LoginRegister() {
+    const [isLogin, setIsLogin] = useState(true);
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
-  const toggleToRegister = (e) => {
-    e.preventDefault();
-    setIsRegister(true);
-  };
+    const navigate = useNavigate(); // Initialize useNavigate
 
-  const toggleToLogin = (e) => {
-    e.preventDefault();
-    setIsRegister(false);
-  };
+    const toggleForm = () => {
+        setIsLogin(!isLogin);
+        setErrorMessage("");
+        setSuccessMessage("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setPasswordConfirmation("");
+    };
 
-  return (
-    <div className="container">
-      <div className={`wrapper ${isRegister ? 'register-active' : 'login-active'}`}>
-        
-        {!isRegister && (
-          <div className="form-box login">
-            <form>
-              <h2>Login</h2>
-              <div className="input-box">
-                <input type="text" placeholder="Username" required />
-              </div>
-              <div className="input-box">
-                <input type="password" placeholder="Password" required />
-              </div>
-              <div className="remember-forgot">
-                <label>
-                  <input type="checkbox" /> Remember me
-                </label>
-                <a href="#">Forgot password?</a>
-              </div>
-              <button type="submit">Login</button>
-              <div className="switch-link">
-                <p>
-                  Don’t have an account?{' '}
-                  <a href="#" onClick={toggleToRegister}>
-                    Register
-                  </a>
-                </p>
-              </div>
-            </form>
-          </div>
-        )}
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-     
-        {isRegister && (
-          <div className="form-box register">
-            <form>
-              <h2>Registration</h2>
-              <div className="input-box">
-                <input type="text" placeholder="Username" required />
-              </div>
-              <div className="input-box">
-                <input type="email" placeholder="Email" required />
-              </div>
-              <div className="input-box">
-                <input type="password" placeholder="Password" required />
-              </div>
-              <div className="checkbox-box">
-                <label>
-                  <input type="checkbox" /> I agree to the terms & conditions
-                </label>
-              </div>
-              <button type="submit">Register</button>
-              <div className="switch-link">
-                <p>
-                  Already have an account?{' '}
-                  <a href="#" onClick={toggleToLogin}>
-                    Login
-                  </a>
-                </p>
-              </div>
-            </form>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+        const url = isLogin
+            ? "http://localhost:8000/auth/login/"
+            : "http://localhost:8000/auth/register/";
+
+        const payload = isLogin
+            ? { username, password }
+            : { username, email, password, password_confirmation: passwordConfirmation };
+
+        try {
+            const response = await axios.post(url, payload);
+
+            if (response.status === 200) {
+                if (isLogin) {
+                    setSuccessMessage("Logged in successfully!");
+                    setErrorMessage("");
+
+                    // Store the token in localStorage
+                    localStorage.setItem("token", response.data.access);
+
+                    // Redirect to the dashboard after successful login
+                    navigate("/dashboard"); // Change "/dashboard" to your desired path
+                } else {
+                    setSuccessMessage("Registered successfully!");
+                    setErrorMessage("");
+                }
+            } else {
+                setErrorMessage(response.data.detail || "Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            setErrorMessage("A network error occurred. Please try again later.");
+        }
+    };
+
+    return (
+        <div className="container">
+            <div className={`wrapper ${isLogin ? "login-active" : "register-active"}`}>
+                <div className="form-box">
+                    <h2>{isLogin ? "Login" : "Register"}</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="input-box">
+                            <input
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {!isLogin && (
+                            <>
+                                <div className="input-box">
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="input-box">
+                                    <input
+                                        type="password"
+                                        placeholder="Confirm Password"
+                                        value={passwordConfirmation}
+                                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </>
+                        )}
+                        <div className="input-box">
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                        {successMessage && <p className="success-message">{successMessage}</p>}
+                        <button type="submit">{isLogin ? "Login" : "Register"}</button>
+                    </form>
+                    <div className="switch-link">
+                        {isLogin ? (
+                            <p>
+                                Don't have an account?{" "}
+                                <a href="#" onClick={toggleForm}>
+                                    Register here
+                                </a>
+                            </p>
+                        ) : (
+                            <p>
+                                Already have an account?{" "}
+                                <a href="#" onClick={toggleForm}>
+                                    Login here
+                                </a>
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default LoginRegister;

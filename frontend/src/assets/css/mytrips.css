@@ -1,0 +1,126 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Light background for the whole page */
+}
+
+/* Title Styles */
+h1 {
+    text-align: center; /* Center the title */
+    color: #4A90E2; /* Beautiful blue color for the title */
+    margin-top: 50px; /* Space above the title */
+    font-size: 36px;
+}
+
+/* Style for the trip cards */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    justify-content: center; /* Center the cards horizontally */
+    align-items: start;     /* Align the cards to the start */
+    padding: 20px;           /* Add padding around the grid */
+    height: auto;            /* Adjust height according to the content */
+    max-width: 1200px;       /* Limit the container width */
+    margin: 0 auto;          /* Center the card container on the page */
+}
+
+.trip-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    text-align: center; /* Center the text */
+}
+
+.trip-card:hover {
+    transform: scale(1.05);
+}
+
+.trip-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.trip-card p {
+    margin: 10px 0;
+}
+
+/* Destination Name in Card and Modal */
+.destination-name {
+    color: #4A90E2; /* Blue color for destination names */
+    font-weight: bold;
+}
+
+/* Modal Styles */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    padding: 20px;
+    max-width: 500px;
+    width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px; /* Adjust the position from the top */
+    right: 10px; /* Adjust the position from the right */
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.close-btn:hover {
+    color: red; /* Change color on hover */
+}
+
+.destination-image-modal {
+    width: 150px;  /* Adjust this width as needed */
+    height: auto;  /* Maintain aspect ratio */
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Edit Button Styles */
+.edit-btn {
+    background-color: #4CAF50; /* Green color */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.edit-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
