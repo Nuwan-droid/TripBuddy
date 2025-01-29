@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import "../App.css"; // Import the CSS file
+import "../App.css"; 
+import trip1 from "../assets/img/trip/tr1.jpg"; 
+import backgroundVideo from "../../../frontend/src/assets/img/vid1.mov"; 
 
 function CustomLayout() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -14,86 +16,69 @@ function CustomLayout() {
         setIsPopupOpen(false);
     };
 
-    const images = [
-        require("../assets/img/trip/trip1.jpg"),
-        require("../assets/img/trip/trip1.jpg"),
-        require("../assets/img/trip/trip1.jpg"),
-        require("../assets/img/trip/trip1.jpg"),
-        require("../assets/img/trip/trip1.jpg"),
-        require("../assets/img/trip/trip1.jpg"),
-        require("../assets/img/trip/trip1.jpg"),
-        
-    ];
-
     return (
-        <div className="container">
-            {/* Buttons and Circular Images */}
+        <div>
+            {/* Background Video */}
+            <div className="video-container">
+                <video autoPlay loop muted className="background-video">
+                    <source src={backgroundVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            {/* Image and Button */}
             <div className="button-grid">
-                {images.map((image, index) => (
-                    <div key={index} className="button-image-container">
-                        {/* Circular Image */}
-                        <div className="card-image">
-                            <img src={image} alt={`Trip ${index + 1}`} />
-                        </div>
-                        <button onClick={openPopup} className="custom-button">
-                            Click here
-                        </button>
+                <div className="button-image-container">
+                    <div className="card-image">
+                        <img
+                            src={trip1} 
+                            alt="Travel 1"
+                            onClick={openPopup} 
+                            style={{ cursor: "pointer" }}
+                        />
                     </div>
-                ))}
+                </div>
             </div>
 
             {/* Popup Form */}
             {isPopupOpen && (
                 <div className="popup-overlay">
                     <div className="popup-content">
-                        <h2>Hotel Booking Form</h2>
+                        <h2>Travel Planning Form</h2>
 
                         {/* Form Fields */}
                         <form>
-    <h2>Enjoy Now</h2>
-    
-    <div className="form-group">
-        <label>Date</label>
-        <input type="date" />
-    </div>
+                            <div className="form-group">
+                                <label>Date</label>
+                                <input type="date" />
+                            </div>
 
-    <div className="form-group">
-        <label>Hotel Name</label>
-        <input type="text" placeholder="Enter hotel name" />
-    </div>
+                            <div className="form-group">
+                                <label>Description</label>
+                                <textarea
+                                    placeholder="Enter your travel description"
+                                    rows="3"
+                                />
+                            </div>
 
-    <div className="form-group">
-        <label>Room Type</label>
-        <select>
-            <option value="single">Single Room</option>
-            <option value="double">Double Room</option>
-            <option value="suite">Suite</option>
-        </select>
-    </div>
+                            <div className="form-group">
+                                <label>Time</label>
+                                <input type="time" />
+                            </div>
 
-    <div className="form-group">
-        <label>Guests</label>
-        <input type="number" placeholder="Number of guests" />
-    </div>
-
-    <div className="form-group">
-        <label>Destination Details</label>
-        <textarea placeholder="Enter destination details (Lorem ipsum...)" rows="3" />
-    </div>
-
-    <div className="form-buttons">
-        <button type="button" className="fix-button">
-            Fix
-        </button>
-        
-    </div>
-</form>
-
-
-                        {/* Close Button */}
-                        <button onClick={closePopup} className="close-button">
-                            Close
-                        </button>
+                            <div className="form-buttons">
+                                <button type="button" className="fix-button">
+                                    Fix
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={closePopup}
+                                    className="close-button"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
