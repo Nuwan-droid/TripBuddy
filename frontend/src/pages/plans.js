@@ -1,37 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
+import "../App.css"; // Import the CSS file
 
 function CustomLayout() {
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    // Function to open the popup
+    const openPopup = () => {
+        setIsPopupOpen(true);
+    };
+
+    // Function to close the popup
+    const closePopup = () => {
+        setIsPopupOpen(false);
+    };
+
+    const images = [
+        require("../assets/img/trip/trip1.jpg"),
+        require("../assets/img/trip/trip1.jpg"),
+        require("../assets/img/trip/trip1.jpg"),
+        require("../assets/img/trip/trip1.jpg"),
+        require("../assets/img/trip/trip1.jpg"),
+        require("../assets/img/trip/trip1.jpg"),
+        require("../assets/img/trip/trip1.jpg"),
+        
+    ];
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            {/* Headline */}
-            <h1 className="text-3xl font-bold mb-6">Headline</h1>
-
-            {/* Image Placeholder */}
-            <div className="w-64 h-40 bg-gray-300 flex items-center justify-center mb-6">
-                <p className="text-gray-500">Image goes here</p>
+        <div className="container">
+            {/* Buttons and Circular Images */}
+            <div className="button-grid">
+                {images.map((image, index) => (
+                    <div key={index} className="button-image-container">
+                        {/* Circular Image */}
+                        <div className="card-image">
+                            <img src={image} alt={`Trip ${index + 1}`} />
+                        </div>
+                        <button onClick={openPopup} className="custom-button">
+                            Click here
+                        </button>
+                    </div>
+                ))}
             </div>
 
-            {/* Buttons */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                    Click here
-                </button>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                    Click here
-                </button>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                    Click here
-                </button>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                    Click here
-                </button>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                    Click here
-                </button>
-                <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600">
-                    Click here
-                </button>
-            </div>
+            {/* Popup Form */}
+            {isPopupOpen && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <h2>Hotel Booking Form</h2>
+
+                        {/* Form Fields */}
+                        <form>
+                            <div className="form-group">
+                                <label>Date</label>
+                                <input type="date" />
+                            </div>
+                            <div className="form-group">
+                                <label>Hotel Name</label>
+                                <input type="text" placeholder="Enter hotel name" />
+                            </div>
+                            <div className="form-group">
+                                <label>Room Type</label>
+                                <select>
+                                    <option value="single">Single Room</option>
+                                    <option value="double">Double Room</option>
+                                    <option value="suite">Suite</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Guests</label>
+                                <input type="number" placeholder="Number of guests" />
+                            </div>
+                        </form>
+
+                        {/* Close Button */}
+                        <button onClick={closePopup} className="close-button">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
