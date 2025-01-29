@@ -30,7 +30,7 @@
   .form-box {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 50px;
   }
   
   form h2 {
