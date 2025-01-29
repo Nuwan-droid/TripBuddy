@@ -50,27 +50,45 @@ function CustomLayout() {
 
                         {/* Form Fields */}
                         <form>
-                            <div className="form-group">
-                                <label>Date</label>
-                                <input type="date" />
-                            </div>
-                            <div className="form-group">
-                                <label>Hotel Name</label>
-                                <input type="text" placeholder="Enter hotel name" />
-                            </div>
-                            <div className="form-group">
-                                <label>Room Type</label>
-                                <select>
-                                    <option value="single">Single Room</option>
-                                    <option value="double">Double Room</option>
-                                    <option value="suite">Suite</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Guests</label>
-                                <input type="number" placeholder="Number of guests" />
-                            </div>
-                        </form>
+    <h2>Enjoy Now</h2>
+    
+    <div className="form-group">
+        <label>Date</label>
+        <input type="date" />
+    </div>
+
+    <div className="form-group">
+        <label>Hotel Name</label>
+        <input type="text" placeholder="Enter hotel name" />
+    </div>
+
+    <div className="form-group">
+        <label>Room Type</label>
+        <select>
+            <option value="single">Single Room</option>
+            <option value="double">Double Room</option>
+            <option value="suite">Suite</option>
+        </select>
+    </div>
+
+    <div className="form-group">
+        <label>Guests</label>
+        <input type="number" placeholder="Number of guests" />
+    </div>
+
+    <div className="form-group">
+        <label>Destination Details</label>
+        <textarea placeholder="Enter destination details (Lorem ipsum...)" rows="3" />
+    </div>
+
+    <div className="form-buttons">
+        <button type="button" className="fix-button">
+            Fix
+        </button>
+        
+    </div>
+</form>
+
 
                         {/* Close Button */}
                         <button onClick={closePopup} className="close-button">
