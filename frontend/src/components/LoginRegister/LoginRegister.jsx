@@ -38,26 +38,29 @@ function LoginRegister() {
         try {
             const response = await axios.post(url, payload);
 
-            if (response.status === 200) {
-                if (isLogin) {
-                    setSuccessMessage("Logged in successfully!");
-                    setErrorMessage("");
+            if (isLogin && response.status === 200) {
+                setSuccessMessage("Logged in successfully!");
+                setErrorMessage("");
 
-                    // Store the token in localStorage
-                    localStorage.setItem("token", response.data.access);
+                // Store the token in localStorage
+                localStorage.setItem("token", response.data.access);
 
-                    // Redirect to the dashboard after successful login
-                    navigate("/dashboard"); // Change "/dashboard" to your desired path
-                } else {
-                    setSuccessMessage("Registered successfully!");
-                    setErrorMessage("");
-                }
+                // Redirect to the dashboard after successful login
+                navigate("/dashboard"); // Change "/dashboard" to your desired path
+            } else if (!isLogin && response.status === 201) {
+                setSuccessMessage("Registered successfully! Please log in.");
+                setErrorMessage("");
+
+                // Toggle back to the login form after successful registration
+                setIsLogin(true); // Switch to the login form
+                setUsername(""); // Clear the username field
+                setPassword(""); // Clear the password field
             } else {
                 setErrorMessage(response.data.detail || "Something went wrong. Please try again.");
             }
         } catch (error) {
             console.error("Error:", error);
-            setErrorMessage("A network error occurred. Please try again later.");
+            setErrorMessage(error.response?.data?.detail || "A network error occurred. Please try again later.");
         }
     };
 
