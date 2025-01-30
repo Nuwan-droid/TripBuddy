@@ -10,6 +10,7 @@ import Admin_login  from './components/LoginRegister/admin_login.jsx'
 import Dashboard from './pages/User_Dashboard.jsx';
 import Plans from './pages/plans.js';
 import MyTrips from 'views/Mytrips.js';
+import EditTrip from 'views/EditTrip.js';
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/plans" element={<Plans />} />
                     <Route path="/mytrips" element={<MyTrips />} />
                     <Route path="/admin-login" element={<Admin_login/>} />
+                    <Route path="/edittrip/:id" element={<EditTrip />} />
                 </Routes>
             </div>
             <Routes>
