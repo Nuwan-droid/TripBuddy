@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import './AdminDashboard.css';
+import { Link } from 'react-router-dom';
+import './AdminDashboard.css'; // Updated CSS file
 
 const AdminDashboard = () => {
     const [activeSection, setActiveSection] = useState('overview');
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
                         🏠 Overview
                     </Link>
                     <Link
-                        to="//managedestinations"
+                        to="/managedestinations"
                         onClick={() => setActiveSection('destinations')}
                         className={activeSection === 'destinations' ? 'active' : ''}
                     >
@@ -56,14 +56,16 @@ const AdminDashboard = () => {
             {/* Main Content */}
             <main className="main-content">
                 {/* Mobile Menu Button */}
-                <button className="menu-btn" onClick={() => setSidebarOpen(true)}>☰</button>
+                <button className="menu-btn" onClick={() => setSidebarOpen(!isSidebarOpen)}>☰</button>
 
                 {/* Stats Section */}
                 <div className="stats-container">
-                    <div className="stat-box">Total Users <span>{stats.totalUsers}</span></div>
-                    <div className="stat-box">Active Itineraries <span>{stats.activeItineraries}</span></div>
-                    <div className="stat-box">Total Destinations <span>{stats.totalDestinations}</span></div>
-                    <div className="stat-box">Pending Approvals <span>{stats.pendingApprovals}</span></div>
+                    {Object.entries(stats).map(([key, value]) => (
+                        <div className="stat-box" key={key}>
+                            <h3>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}</h3>
+                            <span>{value}</span>
+                        </div>
+                    ))}
                 </div>
 
                 {/* Section Content */}

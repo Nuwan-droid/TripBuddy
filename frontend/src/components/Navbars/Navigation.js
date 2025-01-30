@@ -1,48 +1,36 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; 
-import logo from '..//.//..//assets/img/logo.jpeg';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from '..//.//..//assets/img/logo.png';
+import './Navigation.css'; // Import a CSS file for better styling
 
 function Navigation() {
+    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!isMobileMenuOpen);
+    };
+
     return (
-        <nav style={styles.nav}>
-            
-            <img src= {logo} alt="TripBuddy Logo" style={styles.logo} />
-
-           
-            <div style={styles.navLinksContainer}>
-                <Link to="/" style={styles.navLink}>Home</Link>
-                <Link to="/destinations" style={styles.navLink}>Destinations</Link>
-                <Link to="/plans" style={styles.navLink}>Plans</Link>
-                <Link to="/admin" style={styles.navLink}>Admin</Link>
-
-                <Link to="/managedestinations" style={styles.navLink}>Manage Destinations</Link>
-
+        <nav className="nav">
+            {/* Logo */}
+            <div className="logo-container">
+                <img src={logo} alt="TripBuddy Logo" className="logo" />
             </div>
+
+            {/* Desktop Navigation Links */}
+            <div className={`nav-links-container ${isMobileMenuOpen ? 'open' : ''}`}>
+                <Link to="/" className="nav-link">Home</Link>
+                <Link to="/destinations" className="nav-link">Destinations</Link>
+                <Link to="/plans" className="nav-link">Plans</Link>
+                <Link to="/admin" className="nav-link">Admin</Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                {isMobileMenuOpen ? '✕' : '☰'}
+            </button>
         </nav>
     );
 }
 
-const styles = {
-    nav: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '10px 20px',
-        backgroundColor: 'rgba(6, 120, 105, 0.4)', 
-    },
-    logo: {
-        height: '50px',
-    },
-    navLinksContainer: {
-        display: 'flex',
-        gap: '40px',
-    },
-    navLink: {
-        textDecoration: 'none',
-        color: 'black', 
-        fontSize: '18px',
-        fontWeight: 'bold',
-    },
-};
-
 export default Navigation;
-
