@@ -18,7 +18,6 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/destinations" element={<Destinations />} />
-                    <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/managedestinations" element={<ManageDestinations />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/dashboard" element={<Dashboard />} />
@@ -26,6 +25,10 @@ function App() {
                     <Route path="/mytrips" element={<MyTrips />} />
                 </Routes>
             </div>
+            <Routes>
+                <Route path="/admin" element={<AdminDashboard />} />
+            </Routes>
+
         </Router>
     );
 }
