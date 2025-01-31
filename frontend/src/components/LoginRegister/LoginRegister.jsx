@@ -1,137 +1,179 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import axios
-import "./LoginRegister.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './LoginRegister.css';
 
-function LoginRegister() {
+const LoginRegister = () => {
+    const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        passwordConfirmation: ''
+    });
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
 
     const toggleForm = () => {
         setIsLogin(!isLogin);
-        setErrorMessage("");
-        setSuccessMessage("");
-        setUsername("");
-        setEmail("");
-        setPassword("");
-        setPasswordConfirmation("");
+        setErrorMessage('');
+        setSuccessMessage('');
+        setFormData({
+            username: '',
+            email: '',
+            password: '',
+            passwordConfirmation: ''
+        });
+    };
+
+    const handleAdminLogin = () => {
+        navigate('/admin-login'); // Navigate to admin login page
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const url = isLogin
-            ? "http://localhost:8000/auth/login/"
-            : "http://localhost:8000/auth/register/";
+            ? 'http://localhost:8000/auth/login/'
+            : 'http://localhost:8000/auth/register/';
 
         const payload = isLogin
-            ? { username, password }
-            : { username, email, password, password_confirmation: passwordConfirmation };
+            ? {
+                username: formData.username,
+                password: formData.password
+            }
+            : {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                password_confirmation: formData.passwordConfirmation
+            };
 
         try {
-            const response = await axios.post(url, payload);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
 
-            if (response.status === 200) {
+            const data = await response.json();
+
+            if (response.ok) {
                 if (isLogin) {
-                    setSuccessMessage("Logged in successfully!");
-                    setErrorMessage("");
-
-                    // Store the token in localStorage
-                    localStorage.setItem("token", response.data.access);
-
-                    // Redirect to the dashboard after successful login
-                    navigate("/dashboard"); // Change "/dashboard" to your desired path
+                    localStorage.setItem('token', data.access);
+                    setSuccessMessage('Logged in successfully!');
+                    // Navigate to dashboard
                 } else {
-                    setSuccessMessage("Registered successfully!");
-                    setErrorMessage("");
+                    setSuccessMessage('Registered successfully! Please log in.');
+                    setIsLogin(true);
+                    setFormData({
+                        username: '',
+                        email: '',
+                        password: '',
+                        passwordConfirmation: ''
+                    });
                 }
+                setErrorMessage('');
             } else {
-                setErrorMessage(response.data.detail || "Something went wrong. Please try again.");
+                setErrorMessage(data.detail || 'Something went wrong. Please try again.');
             }
         } catch (error) {
-            console.error("Error:", error);
-            setErrorMessage("A network error occurred. Please try again later.");
+            setErrorMessage('A network error occurred. Please try again later.');
         }
     };
 
     return (
-        <div className="container">
-            <div className={`wrapper ${isLogin ? "login-active" : "register-active"}`}>
-                <div className="form-box">
-                    <h2>{isLogin ? "Login" : "Register"}</h2>
+        <div className="auth-container">
+            <div className={`auth-wrapper ${isLogin ? 'login' : 'register'}`}>
+                <div className="auth-form">
+                    <h2>{isLogin ? 'Login' : 'Register'}</h2>
                     <form onSubmit={handleSubmit}>
-                        <div className="input-box">
+                        <div className="form-group">
                             <input
                                 type="text"
+                                name="username"
                                 placeholder="Username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={formData.username}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
+                        
                         {!isLogin && (
-                            <>
-                                <div className="input-box">
-                                    <input
-                                        type="email"
-                                        placeholder="Email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                                <div className="input-box">
-                                    <input
-                                        type="password"
-                                        placeholder="Confirm Password"
-                                        value={passwordConfirmation}
-                                        onChange={(e) => setPasswordConfirmation(e.target.value)}
-                                        required
-                                    />
-                                </div>
-                            </>
+                            <div className="form-group">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         )}
-                        <div className="input-box">
+                        
+                        <div className="form-group">
                             <input
                                 type="password"
+                                name="password"
                                 placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={formData.password}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
-                        {errorMessage && <p className="error-message">{errorMessage}</p>}
-                        {successMessage && <p className="success-message">{successMessage}</p>}
-                        <button type="submit">{isLogin ? "Login" : "Register"}</button>
-                    </form>
-                    <div className="switch-link">
-                        {isLogin ? (
-                            <p>
-                                Don't have an account?{" "}
-                                <a href="#" onClick={toggleForm}>
-                                    Register here
-                                </a>
-                            </p>
-                        ) : (
-                            <p>
-                                Already have an account?{" "}
-                                <a href="#" onClick={toggleForm}>
-                                    Login here
-                                </a>
-                            </p>
+
+                        {!isLogin && (
+                            <div className="form-group">
+                                <input
+                                    type="password"
+                                    name="passwordConfirmation"
+                                    placeholder="Confirm Password"
+                                    value={formData.passwordConfirmation}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         )}
+
+                        {errorMessage && <div className="error-message">{errorMessage}</div>}
+                        {successMessage && <div className="success-message">{successMessage}</div>}
+
+                        <button type="submit" className="submit-btn">
+                            {isLogin ? 'Login' : 'Register'}
+                        </button>
+                    </form>
+
+                    <div className="toggle-form">
+                        <p>
+                            {isLogin ? "Don't have an account?" : "Already have an account?"}
+                            <button 
+                                className="toggle-btn" 
+                                onClick={toggleForm}
+                            >
+                                {isLogin ? 'Register' : 'Login'}
+                            </button>
+                        </p>
+                    </div>
+
+                    <div className="admin-login">
+                        <button className="admin-btn" onClick={handleAdminLogin}>
+                            Admin Login
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default LoginRegister;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./../assets/css/managedestinations.css"; // Updated CSS file
-import backgroundVideo from "../../../frontend/src/assets/img/vid1.mov";
 
 function AdminDestination() {
     const [destinations, setDestinations] = useState([]);
@@ -54,14 +53,6 @@ function AdminDestination() {
 
     return (
         <div className="admin-container">
-            {/* Background Video */}
-            <div className="video-container">
-                <video autoPlay loop muted className="background-video">
-                    <source src={backgroundVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-
             {/* Add New Destination Card */}
             <div className="add-destination">
                 <h2>Add New Destination</h2>
@@ -89,6 +80,4 @@ function AdminDestination() {
         </div>
     );
 }    
-
 export default AdminDestination;
-
