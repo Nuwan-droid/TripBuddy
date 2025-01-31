@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginRegister.css';
+import backgroundVideo from "../../../src/assets/img/vid1.mov";
 
 const LoginRegister = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const LoginRegister = () => {
             [e.target.name]: e.target.value
         });
     };
-
+    
     const toggleForm = () => {
         setIsLogin(!isLogin);
         setErrorMessage('');
@@ -34,7 +35,7 @@ const LoginRegister = () => {
     };
 
     const handleAdminLogin = () => {
-        navigate('/admin-login'); // Navigate to admin login page
+        navigate('/admin-login');
     };
 
     const handleSubmit = async (e) => {
@@ -71,7 +72,6 @@ const LoginRegister = () => {
                 if (isLogin) {
                     localStorage.setItem('token', data.access);
                     setSuccessMessage('Logged in successfully!');
-                    // Navigate to dashboard
                 } else {
                     setSuccessMessage('Registered successfully! Please log in.');
                     setIsLogin(true);
@@ -93,6 +93,14 @@ const LoginRegister = () => {
 
     return (
         <div className="auth-container">
+            {/* Background Video */}
+            <div className="video-container">
+                <video autoPlay loop muted className="background-video">
+                    <source src={backgroundVideo} type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
             <div className={`auth-wrapper ${isLogin ? 'login' : 'register'}`}>
                 <div className="auth-form">
                     <h2>{isLogin ? 'Login' : 'Register'}</h2>
@@ -156,20 +164,12 @@ const LoginRegister = () => {
                     <div className="toggle-form">
                         <p>
                             {isLogin ? "Don't have an account?" : "Already have an account?"}
-                            <button 
-                                className="toggle-btn" 
-                                onClick={toggleForm}
-                            >
+                            <button className="toggle-btn" onClick={toggleForm}>
                                 {isLogin ? 'Register' : 'Login'}
                             </button>
                         </p>
                     </div>
 
-                    <div className="admin-login">
-                        <button className="admin-btn" onClick={handleAdminLogin}>
-                            Admin Login
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
