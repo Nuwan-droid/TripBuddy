@@ -72,6 +72,7 @@ const LoginRegister = () => {
                 if (isLogin) {
                     localStorage.setItem('token', data.access);
                     setSuccessMessage('Logged in successfully!');
+                    // Navigate to dashboard
                 } else {
                     setSuccessMessage('Registered successfully! Please log in.');
                     setIsLogin(true);
@@ -115,7 +116,7 @@ const LoginRegister = () => {
                                 required
                             />
                         </div>
-                        
+
                         {!isLogin && (
                             <div className="form-group">
                                 <input
@@ -128,7 +129,7 @@ const LoginRegister = () => {
                                 />
                             </div>
                         )}
-                        
+
                         <div className="form-group">
                             <input
                                 type="password"
@@ -164,7 +165,10 @@ const LoginRegister = () => {
                     <div className="toggle-form">
                         <p>
                             {isLogin ? "Don't have an account?" : "Already have an account?"}
-                            <button className="toggle-btn" onClick={toggleForm}>
+                            <button 
+                                className="toggle-btn" 
+                                onClick={toggleForm}
+                            >
                                 {isLogin ? 'Register' : 'Login'}
                             </button>
                         </p>
