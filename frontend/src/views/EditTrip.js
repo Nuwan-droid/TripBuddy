@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 import "../assets/css/edittrip.css";
 
-function EditTrip({ match, history }) {
+function EditTrip() {
+    const { id } = useParams(); // Get trip ID from URL
+    const navigate = useNavigate(); // Navigation hook
+
     const [trip, setTrip] = useState({
         trip_name: "",
         start_date: "",
@@ -10,6 +14,7 @@ function EditTrip({ match, history }) {
         destination_id: "",
         total_budget: "",
     });
+
     const [destinations, setDestinations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -22,16 +27,16 @@ function EditTrip({ match, history }) {
 
     const fetchTrip = async () => {
         try {
-            const tripId = match.params.id;
-            const response = await axios.get(`http://127.0.0.1:8000/trips/trips/${tripId}/`, {
+            const response = await axios.get(`http://127.0.0.1:8000/trips/trips/${id}/`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTrip(response.data);
+            setLoading(false); // Set loading to false after fetching data
         } catch (error) {
             console.error("Error fetching trip:", error);
             setError("Failed to fetch trip details.");
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const fetchDestinations = async () => {
@@ -48,8 +53,8 @@ function EditTrip({ match, history }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setTrip((prevState) => ({
-            ...prevState,
+        setTrip((prevTrip) => ({
+            ...prevTrip,
             [name]: value,
         }));
     };
@@ -57,15 +62,15 @@ function EditTrip({ match, history }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const tripId = match.params.id;
             await axios.put(
-                `http://127.0.0.1:8000/trips/trips/${tripId}/`,
+                `http://127.0.0.1:8000/trips/trips/${id}/`,
                 trip,
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            history.push("/mytrips"); // Redirect to the My Trips page after successful update
+            alert("Trip updated successfully!");
+            navigate("/mytrips"); // Redirect to My Trips after successful update
         } catch (error) {
             console.error("Error updating trip:", error);
             setError("Failed to update trip.");

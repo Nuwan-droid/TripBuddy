@@ -57,6 +57,15 @@ h1 {
     font-weight: bold;
 }
 
+/* Destination Image in Card */
+.destination-image {
+    width: 100%; /* Make the image fill the card width */
+    height: 150px; /* Fixed height for all images */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    border-radius: 8px; /* Rounded corners for the image */
+    margin-top: 10px; /* Space above the image */
+}
+
 /* Modal Styles */
 .modal {
     display: flex;
@@ -123,4 +132,82 @@ h1 {
 
 .edit-btn:hover {
     background-color: #45a049; /* Darker green on hover */
+}
+
+/* Add Trip Form Styles */
+.add-trip-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px; /* Limit form width */
+    margin: 0 auto; /* Center the form */
+    margin-top: 30px; /* Space above the form */
+}
+
+.add-trip-form h2 {
+    color: #4A90E2; /* Blue color for the form title */
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.add-trip-form input {
+    width: 100%; /* Make inputs take up full width */
+    padding: 10px;
+    margin-bottom: 15px; /* Space between inputs */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+
+.add-trip-form button {
+    background-color: #4CAF50; /* Green color for the button */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.add-trip-form button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Style for the Select Element */
+.form-select {
+    width: 100%; /* Make the select take up full width */
+    padding: 10px;
+    margin-bottom: 15px; /* Space below the select */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+    background-color: #fff; /* White background for the select */
+}
+
+.form-select:focus {
+    border-color: #4A90E2; /* Blue border when focused */
+    outline: none; /* Remove the default focus outline */
+}
+
+.delete-btn{
+    background-color: red; /* Green color */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
