@@ -22,3 +22,17 @@ class Trip(models.Model):
     def destination(self):
         """Return the related Destination object."""
         return Destination.objects.get(id=self.destination_id)
+    
+class Activity(models.Model):
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)  # Link to a trip
+    description = models.TextField()
+    activity_date = models.DateField()
+    activity_time = models.TimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'activities'
+
+    def __str__(self):
+        return f"{self.trip.trip_name} - {self.description}"
