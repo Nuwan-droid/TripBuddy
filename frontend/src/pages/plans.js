@@ -1,89 +1,64 @@
-import React, { useState } from "react";
-import "../App.css"; 
-import trip1 from "../assets/img/trip/tr1.jpg"; 
-import backgroundVideo from "../../../frontend/src/assets/img/vid1.mov"; 
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "../assets/css/activities.css"; // Ensure CSS is applied
 
-function CustomLayout() {
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+function Plans() {
+    const [activities, setActivities] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const navigate = useNavigate(); // Navigation hook
 
-    // Function to open the popup
-    const openPopup = () => {
-        setIsPopupOpen(true);
+    useEffect(() => {
+        if (!token) {
+            console.error("No token found. User must log in.");
+            alert("Session expired! Please log in again.");
+            navigate("/login");
+            return;
+        }
+
+        fetchActivities();
+    }, []);
+
+    const fetchActivities = async () => {
+        try {
+            const response = await axios.get("http://127.0.0.1:8000/trips/trips/", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setActivities(response.data);
+        } catch (error) {
+            console.error("Error fetching activities:", error);
+            alert("Failed to fetch activities. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // Function to close the popup
-    const closePopup = () => {
-        setIsPopupOpen(false);
-    };
+    if (loading) {
+        return <p>Loading activities...</p>;
+    }
 
     return (
-        <div>
-            {/* Background Video */}
-            <div className="video-container">
-                <video autoPlay loop muted className="background-video">
-                    <source src={backgroundVideo} type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-
-            {/* Image and Button */}
-            <div className="button-grid">
-                <div className="button-image-container">
-                    <div className="card-image">
-                        <img
-                            src={trip1} 
-                            alt="Travel 1"
-                            onClick={openPopup} 
-                            style={{ cursor: "pointer" }}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            {/* Popup Form */}
-            {isPopupOpen && (
-                <div className="popup-overlay">
-                    <div className="popup-content">
-                        <h2>Travel Planning Form</h2>
-
-                        {/* Form Fields */}
-                        <form>
-                            <div className="form-group">
-                                <label>Date</label>
-                                <input type="date" />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Description</label>
-                                <textarea
-                                    placeholder="Enter your travel description"
-                                    rows="3"
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Time</label>
-                                <input type="time" />
-                            </div>
-
-                            <div className="form-buttons">
-                                <button type="button" className="fix-button">
-                                    Fix
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={closePopup}
-                                    className="close-button"
-                                >
-                                    Close
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+        <div className="activities-container">
+            <h1>Trip Activities</h1>
+            {activities.length === 0 ? (
+                <p>No activities found.</p>
+            ) : (
+                <div className="activities-list">
+                    {activities.map((activity) => (
+                        <div key={activity.id} className="activity-card">
+                            <h3>{activity.name}</h3>
+                            <p><strong>Description:</strong> {activity.description}</p>
+                            <p><strong>Date:</strong> {activity.activity_date}</p>
+                            <p><strong>Time:</strong> {activity.activity_time}</p>
+                            <p><strong>Created At:</strong> {new Date(activity.created_at).toLocaleString()}</p>
+                            <p><strong>Updated At:</strong> {new Date(activity.updated_at).toLocaleString()}</p>
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
     );
 }
 
-export default CustomLayout;
+export default Plans;

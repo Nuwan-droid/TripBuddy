@@ -5,23 +5,23 @@ import { useNavigate } from "react-router-dom";
 
 function MyTrips() {
     const [trips, setTrips] = useState([]);
-    const [selectedTrip, setSelectedTrip] = useState(null); // State for selected trip details
-    const [destinationData, setDestinationData] = useState([]); // Array to store destination data
-    const [loading, setLoading] = useState(true); // Loading state
-    const token = localStorage.getItem("token"); // Get token from local storage
+    const [selectedTrip, setSelectedTrip] = useState(null);
+    const [destinationData, setDestinationData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem("token");
 
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchTrips();
-        fetchDestinations(); // Fetch destination data
+        fetchDestinations();
     }, []);
 
     const [newTrip, setNewTrip] = useState({
         trip_name: "",
         start_date: "",
         end_date: "",
-        destination_id: "", // Store destination ID instead of name
+        destination_id: "",
         total_budget: "",
     });
 
@@ -30,11 +30,10 @@ function MyTrips() {
     };
 
     const handleAddTrip = async (e) => {
-        e.preventDefault(); // Prevent form refresh
-
+        e.preventDefault();
         try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/trips/trips", // Updated to match Django view action
+            await axios.post(
+                "http://127.0.0.1:8000/trips/trips/",
                 newTrip,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -44,11 +43,11 @@ function MyTrips() {
                 trip_name: "",
                 start_date: "",
                 end_date: "",
-                destination_id: "", // Reset destination_id
+                destination_id: "",
                 total_budget: "",
             });
 
-            fetchTrips(); // Refresh trip list
+            fetchTrips();
         } catch (error) {
             console.error("Error adding trip:", error);
             alert("Failed to add trip. Please try again.");
@@ -61,7 +60,7 @@ function MyTrips() {
             const response = await axios.get("http://127.0.0.1:8000/trips/trips/", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setTrips(response.data); // Ensure this matches the response from Django
+            setTrips(response.data);
         } catch (error) {
             console.error("Error fetching trips:", error);
             alert("Failed to fetch trips. Please try again.");
@@ -75,16 +74,16 @@ function MyTrips() {
             const response = await axios.get("http://127.0.0.1:8000/api/destinations/", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setDestinationData(response.data); // Store fetched destinations
+            setDestinationData(response.data);
         } catch (error) {
             console.error("Error fetching destinations:", error);
             alert("Failed to fetch destinations. Please try again.");
         }
     };
 
-    const handlePlansClick = () => {
-        // Redirect to the /plans URL
-        navigate('/plans');
+    const handlePlansClick = (tripId) => {
+        // Redirect to the activities page with the trip ID
+        navigate(`/plans/${tripId}`);
     };
 
     const handleDeleteTrip = async (tripId) => {
@@ -97,8 +96,8 @@ function MyTrips() {
             });
 
             alert("Trip deleted successfully!");
-            fetchTrips(); // Refresh the trip list
-            setSelectedTrip(null); // Close modal if deleted from there
+            fetchTrips();
+            setSelectedTrip(null);
         } catch (error) {
             console.error("Error deleting trip:", error);
             alert("Failed to delete trip. Please try again.");
