@@ -6,7 +6,7 @@ import Home from './pages/Home.jsx';
 import AdminDashboard from './views/AdminDashboard.jsx';
 import ManageDestinations from './pages/AdminDestination.js';
 import Login from './components/LoginRegister/LoginRegister.jsx';
-import Admin_login  from './components/LoginRegister/admin_login.jsx'
+import Admin_login from './components/LoginRegister/admin_login.jsx'
 import Dashboard from './pages/User_Dashboard.jsx';
 import Plans from './pages/plans.js';
 import MyTrips from 'views/Mytrips.js';
@@ -25,7 +25,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/plans" element={<Plans />} />
                     <Route path="/mytrips" element={<MyTrips />} />
-                    <Route path="/admin-login" element={<Admin_login/>} />
+                    <Route path="/admin-login" element={<Admin_login />} />
                 </Routes>
             </div>
             <Routes>

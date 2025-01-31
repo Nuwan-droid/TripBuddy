@@ -22,7 +22,6 @@ function Navigation() {
                 <Link to="/" className="nav-link">Home</Link>
                 <Link to="/destinations" className="nav-link">Destinations</Link>
                 <Link to="/plans" className="nav-link">Plans</Link>
-                <Link to="/admin" className="nav-link">Admin</Link>
             </div>
 
             {/* Mobile Menu Button */}
