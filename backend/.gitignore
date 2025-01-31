@@ -1,0 +1,28 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+# Virtual Environment #
+venv/
+env/
+.env
+
+# Django migrations (optional, depends on your workflow) #
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Python #
+*.py[cod]
+*$py.class
+
+# IDE #
+.vscode/
+.idea/
+
+# OS generated files #
+.DS_Store
+Thumbs.db
