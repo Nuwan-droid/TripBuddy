@@ -8,8 +8,8 @@ media
 
 # Virtual Environment #
 venv/
+.env/
 env/
-.env
 
 # Django migrations (optional, depends on your workflow) #
 */migrations/*.py
