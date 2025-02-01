@@ -7,16 +7,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from trips.models import Trip, Activity
 from destination.models import Destination
- # Import Activity model
-from .serializers import TripSerializer, ActivitySerializer  # Import ActivitySerializer
+from .serializers import TripSerializer, ActivitySerializer
 from datetime import datetime
-from rest_framework_simplejwt.authentication import JWTAuthentication  # Import JWT authentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
+# ✅ Keeping TripView as it is
 class TripView(ModelViewSet):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-    permission_classes = [IsAuthenticated]  # Require authentication
-    authentication_classes = [JWTAuthentication]  # Use JWT authentication
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def get_queryset(self):
         """Return only trips associated with the logged-in user."""
@@ -28,7 +28,7 @@ class TripView(ModelViewSet):
         Allow authenticated users to add a destination to their trip.
         Prevents adding duplicate trips for the same destination in the same date range.
         """
-        user = request.user  # Get authenticated user
+        user = request.user
         destination_id = request.data.get('destination_id')
         trip_name = request.data.get('trip_name')
         start_date = request.data.get('start_date')
@@ -74,7 +74,7 @@ class TripView(ModelViewSet):
             return Response({"error": "Invalid date format. Use YYYY-MM-DD."}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
+
     @action(detail=True, methods=['get'], url_path='activities')
     def get_trip_activities(self, request, pk=None):
         """
@@ -91,3 +91,17 @@ class TripView(ModelViewSet):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# ✅ Adding ActivityViewSet without modifying TripView
+class ActivityViewSet(ModelViewSet):
+    """
+    ViewSet to handle activity-related operations.
+    """
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get_queryset(self):
+        """Return only activities related to the logged-in user's trips."""
+        return Activity.objects.filter(trip__user=self.request.user)
