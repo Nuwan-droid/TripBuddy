@@ -78,16 +78,21 @@ class TripView(ModelViewSet):
     @action(detail=True, methods=['get'], url_path='activities')
     def get_trip_activities(self, request, pk=None):
         """
-        Retrieve activities for a specific trip.
+        Retrieve activities for a specific trip based on tripId from the URL.
+        Ensures only activities related to the logged-in user are fetched.
         """
         try:
-            trip = Trip.objects.get(id=pk, user=request.user)
+            trip = Trip.objects.get(id=pk, user=request.user)  # ✅ Ensure the user owns the trip
             activities = Activity.objects.filter(trip=trip)
+            
+            if not activities.exists():
+                return Response({"message": "No activities found for this trip."}, status=status.HTTP_200_OK)
+
             serializer = ActivitySerializer(activities, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Trip.DoesNotExist:
-            return Response({"error": "Trip not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "Trip not found or does not belong to you."}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

@@ -9,6 +9,7 @@ function MyTrips() {
     const [destinationData, setDestinationData] = useState([]);
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("user_id"); // Assuming user_id is stored in localStorage
 
     const navigate = useNavigate();
 
@@ -31,10 +32,17 @@ function MyTrips() {
 
     const handleAddTrip = async (e) => {
         e.preventDefault();
+
+        // Ensure user_id is included in the request if required
+        const tripData = {
+            ...newTrip,
+            user_id: userId,  // Include the user_id here
+        };
+
         try {
             await axios.post(
                 "http://127.0.0.1:8000/trips/trips/",
-                newTrip,
+                tripData,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 

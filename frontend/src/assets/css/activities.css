@@ -31,10 +31,49 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
+    border: 1px solid #ddd;
 }
 
 .activity-card:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.activity-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.activity-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Add Activity Card */
+.add-activity-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    border: 1px dashed #ddd;
+}
+
+.add-activity-card:hover {
+    transform: scale(1.05);
+}
+
+.add-activity-card h3 {
+    font-size: 36px;
+    color: #4caf50;
+}
+
+.add-activity-card p {
+    font-size: 16px;
+    color: #555;
 }
 
 /* Popup Overlay */
@@ -58,6 +97,30 @@
     width: 80%;
     max-width: 400px;
     text-align: center;
+}
+
+/* Form Inputs */
+.popup-content input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.popup-content button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.popup-content button:hover {
+    background-color: #45a049;
 }
 
 /* Close Button */
