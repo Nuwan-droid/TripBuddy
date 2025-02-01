@@ -22,9 +22,10 @@ class Trip(models.Model):
     def destination(self):
         """Return the related Destination object."""
         return Destination.objects.get(id=self.destination_id)
-    
+
+
 class Activity(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE)  # Link to a trip
+    trip = models.ForeignKey('Trip', related_name='activities', on_delete=models.CASCADE)  # Link to a trip
     description = models.TextField()
     activity_date = models.DateField()
     activity_time = models.TimeField()

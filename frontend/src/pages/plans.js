@@ -22,17 +22,18 @@ function Plans() {
 
     const fetchActivities = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/trips/trips/", {
+            const response = await axios.get("http://127.0.0.1:8000/activities/", {  // ✅ Correct endpoint
                 headers: { Authorization: `Bearer ${token}` },
             });
+
+            console.log("API Response Data:", response.data);  // ✅ Debug response
             setActivities(response.data);
         } catch (error) {
             console.error("Error fetching activities:", error);
             alert("Failed to fetch activities. Please try again.");
-        } finally {
-            setLoading(false);
         }
     };
+
 
     if (loading) {
         return <p>Loading activities...</p>;
