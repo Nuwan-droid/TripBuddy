@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./../assets/css/managedestinations.css"; // Updated CSS file
+import "./../assets/css/managedestinations.css";
 
 function AdminDestination() {
     const [destinations, setDestinations] = useState([]);
@@ -53,7 +53,7 @@ function AdminDestination() {
 
     return (
         <div className="admin-container">
-            {/* Add New Destination Card */}
+            
             <div className="add-destination">
                 <h2>Add New Destination</h2>
                 <input type="text" placeholder="Name" value={newDestination.name} onChange={(e) => setNewDestination({ ...newDestination, name: e.target.value })} />
@@ -63,7 +63,6 @@ function AdminDestination() {
                 <button onClick={addDestination}>Add Destination</button>
             </div>
     
-            {/* Existing Destinations Section */}
             <div className="existing-destinations">
                 <h2>Existing Destinations</h2>
                 <div className="destination-list">

@@ -33,10 +33,10 @@ function MyTrips() {
     const handleAddTrip = async (e) => {
         e.preventDefault();
 
-        // Ensure user_id is included in the request if required
+        
         const tripData = {
             ...newTrip,
-            user_id: userId,  // Include the user_id here
+            user_id: userId,  
         };
 
         try {
