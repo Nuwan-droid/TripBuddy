@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'reviews',
     'trips',
     'corsheaders',  # CORS headers for handling cross-origin requests
+    'users'
 ]
 
 # CORS settings

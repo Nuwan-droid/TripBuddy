@@ -10,6 +10,7 @@ import Admin_login from './components/LoginRegister/admin_login.jsx'
 import Dashboard from './pages/User_Dashboard.jsx';
 import Plans from './pages/plans.js';
 import MyTrips from 'views/Mytrips.js';
+import ManageUser from './pages/UserDashboard/usermanage.jsx';
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
             </div>
             <Routes>
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/users" element={<ManageUser/>} />
             </Routes>
 
         </Router>

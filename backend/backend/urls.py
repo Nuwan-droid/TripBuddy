@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/', include('destination.api.urls')),
     path('api/destinations/<int:destination_id>/', views.DestinationDetailView.as_view(), name='destination-detail'),
     path('trips/', include('trips.api.urls')),
-    path('auth/', include('user_auth.urls'))
+    path('auth/', include('user_auth.urls')),
+    path('api/', include('users.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
