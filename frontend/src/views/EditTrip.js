@@ -4,8 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../assets/css/edittrip.css";
 
 function EditTrip() {
-    const { id } = useParams(); // Get trip ID from URL
-    const navigate = useNavigate(); // Navigation hook
+    const { id } = useParams(); 
+    const navigate = useNavigate(); 
 
     const [trip, setTrip] = useState({
         trip_name: "",

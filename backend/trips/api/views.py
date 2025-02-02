@@ -11,7 +11,6 @@ from .serializers import TripSerializer, ActivitySerializer
 from datetime import datetime
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-# ✅ Keeping TripView as it is
 class TripView(ModelViewSet):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
@@ -24,10 +23,6 @@ class TripView(ModelViewSet):
 
     @action(detail=False, methods=['post'], url_path='add-trip')
     def add_to_trip(self, request):
-        """
-        Allow authenticated users to add a destination to their trip.
-        Prevents adding duplicate trips for the same destination in the same date range.
-        """
         user = request.user
         destination_id = request.data.get('destination_id')
         trip_name = request.data.get('trip_name')
@@ -77,12 +72,8 @@ class TripView(ModelViewSet):
 
     @action(detail=True, methods=['get'], url_path='activities')
     def get_trip_activities(self, request, pk=None):
-        """
-        Retrieve activities for a specific trip based on tripId from the URL.
-        Ensures only activities related to the logged-in user are fetched.
-        """
         try:
-            trip = Trip.objects.get(id=pk, user=request.user)  # ✅ Ensure the user owns the trip
+            trip = Trip.objects.get(id=pk, user=request.user)
             activities = Activity.objects.filter(trip=trip)
             
             if not activities.exists():
@@ -97,11 +88,7 @@ class TripView(ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-# ✅ Adding ActivityViewSet without modifying TripView
 class ActivityViewSet(ModelViewSet):
-    """
-    ViewSet to handle activity-related operations.
-    """
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
     permission_classes = [IsAuthenticated]
