@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './Destinations.css'; // Add a CSS file for styling
+import './Destinations.css'; 
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // For navigation
+import { useNavigate } from 'react-router-dom'; 
 
 function Destinations() {
     const [destinations, setDestinations] = useState([]);
@@ -15,8 +15,8 @@ function Destinations() {
         end_date: '',
     });
 
-    const token = localStorage.getItem("token"); // Get token from local storage
-    const navigate = useNavigate(); // For navigation
+    const token = localStorage.getItem("token");
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('http://127.0.0.1:8000/api/destinations/')
@@ -121,7 +121,7 @@ function Destinations() {
                 )}
             </div>
 
-            {/* Trip Modal */}
+           
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
